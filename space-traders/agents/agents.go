@@ -3,11 +3,14 @@ package agents
 import (
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"strings"
+
+	"sdl/playing/space-traders/contracts"
 
 	system "sdl/playing/scenes/systems"
 	space_traders "sdl/playing/space-traders"
-	"sdl/playing/space-traders/contracts"
+
 	systems "sdl/playing/space-traders/systems"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -43,51 +46,79 @@ func Init() {
 	MyPosition = getAgentStartData()
 
 	getAgentStartContract()
-	postAgentNegociateContract()
+	// postAgentNegociateContract()
 }
 
 func GetCurrentOrbitals(surface sdl.Surface) {
-	// fmt.Printf("== GetCurrentOrbitals == \n")
 	for key := range MyPosition.Data.Orbitals {
-		// fmt.Printf("[%v]> %s\n", key, value)
-		system.System(surface, int32((key+1)*50))
+		system.System(surface, int32((key+1)*50)) //nolint
 	}
 }
 
 func getAgentData() Data {
-	data := space_traders.GetSpaceTradersData("/my/agent")
+	endpoint := url.Values{}
+	endpoint.Add("api", "my")
+	endpoint.Add("api", "agent")
+	data := space_traders.GetSpaceTradersData(endpoint)
 
 	var responseAgent Data
 
-	json.Unmarshal(data, &responseAgent)
+	err := json.Unmarshal(data, &responseAgent)
+	if err != nil {
+		panic(err)
+	}
 
 	return responseAgent
 }
 
 func getAgentStartData() systems.Data {
-	data := space_traders.GetSpaceTradersData("/systems/" + MyAgent.GetLocationSystem() + "/waypoints/" + MyAgent.GetLocationWaypoint())
+	endpoint := url.Values{}
+	endpoint.Add("api", "systems")
+	endpoint.Add("api", MyAgent.GetLocationSystem())
+	endpoint.Add("api", "waypoints")
+	endpoint.Add("api", MyAgent.GetLocationWaypoint())
+	data := space_traders.GetSpaceTradersData(endpoint)
 
 	var responsePosition systems.Data
 
-	json.Unmarshal(data, &responsePosition)
+	err := json.Unmarshal(data, &responsePosition)
+	if err != nil {
+		panic(err)
+	}
 
 	return responsePosition
 }
 
 func getAgentStartContract() contracts.Data {
-	data := space_traders.GetSpaceTradersData("/my/contracts")
+	endpoint := url.Values{}
+	endpoint.Add("api", "my")
+	endpoint.Add("api", "contracts")
+	data := space_traders.GetSpaceTradersData(endpoint)
 
 	var responseContract contracts.Data
 
-	json.Unmarshal(data, &responseContract)
+	err := json.Unmarshal(data, &responseContract)
+	if err != nil {
+		fmt.Printf("Error : %s", err)
+		panic(err)
+	}
 
 	return responseContract
 }
 
+/*
 func postAgentNegociateContract() {
-	data := space_traders.PostSpaceTradersData("/my/ships/JEANJEAN/negociate/contract", nil)
+	endpoint := url.Values{}
+	endpoint.Add("api", "my")
+	endpoint.Add("api", "ships")
+	endpoint.Add("api", "")
+	endpoint.Add("api", "negotiate")
+	endpoint.Add("api", "contract")
+
+	data := space_traders.PostSpaceTradersData(endpoint, nil)
 	fmt.Printf("> %s", data)
 }
+*/
 
 func (x Data) GetSymbol() string {
 	return "Symbol : " + x.Data.Symbol

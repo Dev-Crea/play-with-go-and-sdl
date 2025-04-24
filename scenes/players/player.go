@@ -18,7 +18,10 @@ func Init(surface sdl.Surface) {
 
 	pixel := sdl.MapRGBA(surface.Format, color.R, color.G, color.B, color.A)
 
-	surface.FillRect(&box, pixel)
+	err := surface.FillRect(&box, pixel)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func moveX(ux int32, x int32) int32 {

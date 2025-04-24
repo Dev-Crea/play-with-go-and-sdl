@@ -4,6 +4,7 @@ const (
 	WINDOW_TITLE  = "Space Traders The PixelGames"
 	WINDOW_HEIGHT = 600
 	WINDOW_WIDTH  = 800
+	FRAMERATE     = 60
 
 	PANEL_HEIGHT = 100
 
@@ -14,4 +15,6 @@ const (
 	FONT_PANEL_SIZE = 12
 
 	MOVE_PLAYER_SIZE = 10
+
+	SPACE_TRADER_API = "https://api.spacetraders.io/v2"
 )

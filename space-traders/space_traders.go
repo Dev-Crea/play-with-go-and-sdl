@@ -1,17 +1,21 @@
 package space_traders
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
+	"path/filepath"
 	"time"
+
+	"sdl/playing/constants"
 )
 
-const api = "https://api.spacetraders.io/v2"
-
 func readTokenFile(file string) []byte {
-	content, err := os.ReadFile(file)
+	safeFile := filepath.Clean(file)
+	content, err := os.ReadFile(safeFile)
 	if err != nil {
 		panic(err)
 	}
@@ -55,7 +59,7 @@ func CreateOrReadTokenAgent() {
 }
 */
 
-func header(request http.Request) {
+func header(request *http.Request) {
 	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", readFileTokenAgent()))
 	request.Header.Add("Content-Type", "application/json")
 }
@@ -69,42 +73,46 @@ func send(request *http.Request) []byte {
 		panic(err)
 	}
 
-	defer response.Body.Close()
+	defer response.Body.Close() //nolint
 
 	data, err := io.ReadAll(response.Body)
 	if err != nil {
 		panic(err)
 	}
 
-	return data
-}
-
-func GetSpaceTradersData(endpoint string) []byte {
-	request, err := http.NewRequest(http.MethodGet, api+endpoint, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	header(*request)
-	data := send(request)
-
-	fmt.Printf("Request [GET]: %s%s\n", api, endpoint)
-	fmt.Printf("Data : %s\n", data)
+	fmt.Printf("[%s] %s : %s\n", request.Method, request.URL.String(), data)
 
 	return data
 }
 
-func PostSpaceTradersData(endpoint string, body io.Reader) []byte {
-	request, err := http.NewRequest(http.MethodPost, api+endpoint, body)
+func apiEndpoint(endpoint url.Values) string {
+	u, err := url.Parse(constants.SPACE_TRADER_API)
+	if err != nil {
+		panic(err)
+	}
+	return u.JoinPath(endpoint["api"]...).String()
+}
+
+func GetSpaceTradersData(endpoint url.Values) []byte {
+	request, err := http.NewRequestWithContext(context.Background(), http.MethodGet, apiEndpoint(endpoint), nil)
 	if err != nil {
 		panic(err)
 	}
 
-	header(*request)
+	header(request)
 	data := send(request)
 
-	fmt.Printf("Request [POST]: %s%s\n", api, endpoint)
-	fmt.Printf("Data : %s\n", data)
+	return data
+}
+
+func PostSpaceTradersData(endpoint url.Values, body io.Reader) []byte {
+	request, err := http.NewRequestWithContext(context.Background(), http.MethodPost, apiEndpoint(endpoint), body)
+	if err != nil {
+		panic(err)
+	}
+
+	header(request)
+	data := send(request)
 
 	return data
 }

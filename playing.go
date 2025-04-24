@@ -29,7 +29,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer window.Destroy()
+
+	defer window.Destroy() //nolint
 
 	surface, err := window.GetSurface()
 	if err != nil {
@@ -42,12 +43,18 @@ func main() {
 	for running {
 		running = event.HandleEvent(surface)
 		UpdateSurface(surface)
-		window.UpdateSurface()
+		err := window.UpdateSurface()
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
 func UpdateSurface(surface *sdl.Surface) {
-	surface.FillRect(nil, 0)
+	err := surface.FillRect(nil, 0)
+	if err != nil {
+		panic(err)
+	}
 
 	panels.PanelGame(*surface)
 	agents.GetCurrentOrbitals(*surface)

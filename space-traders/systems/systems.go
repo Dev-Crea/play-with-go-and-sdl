@@ -1,11 +1,5 @@
 package systems
 
-import (
-	"encoding/json"
-
-	space_traders "sdl/playing/space-traders"
-)
-
 type Orbital struct {
 	Symbol string
 }
@@ -29,8 +23,8 @@ type System struct {
 	SystemSymbol        string
 	Symbol              string
 	Type                string
-	X                   uint32
-	Y                   uint32
+	X                   int32
+	Y                   int32
 	Orbitals            []Orbital
 	Traits              []Trait
 	Modifiers           []string
@@ -44,13 +38,21 @@ type Data struct {
 }
 
 func Init() {
-	getSystems()
+	// getSystems()
 }
 
+/*
 func getSystems() {
-	data := space_traders.GetSpaceTradersData("/systems")
+	endpoint := url.Values{}
+	endpoint.Add("api", "systems")
+
+	data := space_traders.GetSpaceTradersData(endpoint)
 
 	var responseSystem Data
 
-	json.Unmarshal(data, &responseSystem)
+	err := json.Unmarshal(data, &responseSystem)
+	if err != nil {
+		panic(err)
+	}
 }
+*/

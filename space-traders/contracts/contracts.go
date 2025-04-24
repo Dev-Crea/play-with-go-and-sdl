@@ -8,6 +8,6 @@ type Meta struct {
 	Limit int32
 }
 type Data struct {
-	Data Contract
+	// Data Contract
 	Meta Meta
 }

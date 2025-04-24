@@ -14,5 +14,8 @@ func System(surface sdl.Surface, position int32) {
 	color := colors.Brown()
 	pixel := sdl.MapRGBA(surface.Format, color.R, color.G, color.B, color.A)
 
-	surface.FillRect(&box, pixel)
+	err := surface.FillRect(&box, pixel)
+	if err != nil {
+		panic(err)
+	}
 }

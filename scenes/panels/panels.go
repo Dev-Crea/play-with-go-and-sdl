@@ -16,7 +16,10 @@ func PanelGame(surface sdl.Surface) {
 
 	pixel := sdl.MapRGBA(surface.Format, color.R, color.G, color.B, color.A)
 
-	surface.FillRect(&boxBackground, pixel)
+	err := surface.FillRect(&boxBackground, pixel)
+	if err != nil {
+		panic(err)
+	}
 
 	// Display info about agent in panel game
 	if ttf.Init() != nil {
@@ -52,7 +55,10 @@ func writeInPanelLeft(font ttf.Font, word string, surface *sdl.Surface, position
 
 	boxText := sdl.Rect{X: 10, Y: positionY, W: 0, H: 0}
 
-	text.Blit(nil, surface, &boxText)
+	err = text.Blit(nil, surface, &boxText)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func writeInPanelRight(font ttf.Font, word string, surface *sdl.Surface, positionY int32) {
@@ -65,5 +71,8 @@ func writeInPanelRight(font ttf.Font, word string, surface *sdl.Surface, positio
 
 	boxText := sdl.Rect{X: 500, Y: positionY, W: 0, H: 0}
 
-	text.Blit(nil, surface, &boxText)
+	err = text.Blit(nil, surface, &boxText)
+	if err != nil {
+		panic(err)
+	}
 }
