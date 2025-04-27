@@ -2,18 +2,23 @@ package event
 
 import (
 	"fmt"
+	"sync"
 
 	player "sdl/playing/scenes/players"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-func HandleEvent(surface *sdl.Surface) bool {
+var runningMutext sync.Mutex
+
+func HandleEvent() bool {
 	running := true
 	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 		switch t := event.(type) {
 		case *sdl.QuitEvent:
+			runningMutext.Lock()
 			running = false
+			runningMutext.Unlock()
 			/*
 				case *sdl.MouseMotionEvent:
 					fmt.Printf("[%d ms] MouseMotion\ttype:%d\tid:%d\tx:%d\ty:%d\txrel:%d\tyrel:%d\n",

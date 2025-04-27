@@ -3,46 +3,64 @@ package panels
 import (
 	"sdl/playing/colors"
 	"sdl/playing/constants"
-	"sdl/playing/space-traders/agents"
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
 )
 
-func PanelGame(surface sdl.Surface) {
+func PanelGame(renderer *sdl.Renderer) {
 	// Draw rect background panel game
+	err := renderer.SetDrawColor(colors.Green().R, colors.Green().G, colors.Green().B, colors.Green().A)
+	if err != nil {
+		panic(err)
+	}
+
 	boxBackground := sdl.Rect{X: 0, Y: constants.WINDOW_HEIGHT - constants.PANEL_HEIGHT, W: constants.WINDOW_WIDTH, H: constants.PANEL_HEIGHT}
-	color := colors.Green()
 
-	pixel := sdl.MapRGBA(surface.Format, color.R, color.G, color.B, color.A)
+	/*
+		renderer.DrawRect(&boxBackground)
+		if err != nil {
+			panic(err)
+		}
+	*/
 
-	err := surface.FillRect(&boxBackground, pixel)
+	err = renderer.DrawRect(&boxBackground)
 	if err != nil {
 		panic(err)
 	}
+	/*
+		color := colors.Green()
 
-	// Display info about agent in panel game
-	if ttf.Init() != nil {
-		return
-	}
-	defer ttf.Quit()
+		pixel := sdl.MapRGBA(surface.Format, color.R, color.G, color.B, color.A)
 
-	font, err := ttf.OpenFont(constants.FONT_PATH, constants.FONT_PANEL_SIZE)
-	if err != nil {
-		panic(err)
-	}
-	defer font.Close()
+		err := surface.FillRect(&boxBackground, pixel)
+		if err != nil {
+			panic(err)
+		}
 
-	// fmt.Println("Symbol :: %s", agents.GetAgentData().GetSymbol())
+			// Display info about agent in panel game
+			if ttf.Init() != nil {
+				return
+			}
+			defer ttf.Quit()
 
-	myAgent := agents.MyAgent
+			font, err := ttf.OpenFont(constants.FONT_PATH, constants.FONT_PANEL_SIZE)
+			if err != nil {
+				panic(err)
+			}
+			defer font.Close()
 
-	writeInPanelLeft(*font, myAgent.GetSymbol(), &surface, 510)
-	writeInPanelLeft(*font, myAgent.GetHeadquarter(), &surface, 535)
-	writeInPanelLeft(*font, myAgent.GetCredits(), &surface, 560)
+			// fmt.Println("Symbol :: %s", agents.GetAgentData().GetSymbol())
 
-	writeInPanelRight(*font, myAgent.GetFaction(), &surface, 510)
-	writeInPanelRight(*font, myAgent.GetFleet(), &surface, 560)
+			myAgent := agents.MyAgent
+
+			writeInPanelLeft(*font, myAgent.GetSymbol(), &surface, 510)
+			writeInPanelLeft(*font, myAgent.GetHeadquarter(), &surface, 535)
+			writeInPanelLeft(*font, myAgent.GetCredits(), &surface, 560)
+
+			writeInPanelRight(*font, myAgent.GetFaction(), &surface, 510)
+			writeInPanelRight(*font, myAgent.GetFleet(), &surface, 560)
+	*/
 }
 
 func writeInPanelLeft(font ttf.Font, word string, surface *sdl.Surface, positionY int32) {
