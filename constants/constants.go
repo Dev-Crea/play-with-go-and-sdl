@@ -12,7 +12,7 @@ const (
 	PANEL_GAME_CENTER_Y = (WINDOW_HEIGHT / 2) - PANEL_HEIGHT
 
 	FONT_PATH       = "./assets/test.ttf"
-	FONT_PANEL_SIZE = 12
+	FONT_PANEL_SIZE = 16
 
 	MOVE_PLAYER_SIZE = 10
 

@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"os"
+	"sync"
 
+	"sdl/playing/colors"
 	"sdl/playing/constants"
 	event "sdl/playing/events"
 	"sdl/playing/scenes/panels"
@@ -19,8 +20,6 @@ const (
 	RectHeight = 20
 	NumRects   = constants.WINDOW_WIDTH / constants.WINDOW_HEIGHT
 )
-
-var rects [NumRects]sdl.Rect
 
 func main() {
 	var exitcode int
@@ -59,7 +58,10 @@ func run() int {
 
 	defer func() {
 		sdl.Do(func() {
-			window.Destroy()
+			err := window.Destroy()
+			if err != nil {
+				panic(err)
+			}
 		})
 	}()
 
@@ -73,22 +75,19 @@ func run() int {
 
 	defer func() {
 		sdl.Do(func() {
-			renderer.Destroy()
+			err := renderer.Destroy()
+			if err != nil {
+				panic(err)
+			}
 		})
 	}()
 
 	sdl.Do(func() {
-		renderer.Clear()
-	})
-
-	for i := range rects {
-		rects[i] = sdl.Rect{
-			X: int32(rand.Int() % constants.WINDOW_WIDTH),
-			Y: int32(i * constants.WINDOW_HEIGHT / len(rects)),
-			W: RectWidth,
-			H: RectHeight,
+		err := renderer.Clear()
+		if err != nil {
+			panic(err)
 		}
-	}
+	})
 
 	running := true
 
@@ -101,7 +100,7 @@ func run() int {
 				panic(err)
 			}
 
-			err = renderer.SetDrawColor(0, 0, 0, 0x20)
+			err = renderer.SetDrawColor(colors.RGBABlack())
 			if err != nil {
 				panic(err)
 			}
@@ -112,51 +111,23 @@ func run() int {
 			}
 		})
 
-		// updateSurface(renderer)
-		panels.PanelGame(renderer)
-		/*
-			wg := sync.WaitGroup{}
-			for i := range rects {
-				wg.Add(1)
-				go func(i int) {
-					rects[i].X = (rects[i].X + 10) % constants.WINDOW_WIDTH
-					sdl.Do(func() {
-						renderer.SetDrawColor(0xff, 0xff, 0xff, 0xff)
-						renderer.DrawRect(&rects[i])
-					})
-					wg.Done()
-				}(i)
-			}
-
-			wg.Wait()
-		*/
+		wg := sync.WaitGroup{}
+		wg.Add(1)
+		go func() {
+			sdl.Do(func() {
+				panels.PanelGame(renderer)
+				// Box Player
+				// Box Orbitals to system
+			})
+			wg.Done()
+		}()
+		wg.Wait()
 
 		sdl.Do(func() {
 			renderer.Present()
 			sdl.Delay(1000 / constants.FRAMERATE)
 		})
 	}
-	/*
-		UpdateSurface(surface)
-
-		running := true
-		for running {
-			running = event.HandleEvent(surface)
-			UpdateSurface(surface)
-			err := window.UpdateSurface()
-			if err != nil {
-				panic(err)
-			}
-		}
-	*/
 
 	return 0
 }
-
-/*
-func updateSurface(renderer sdl.Renderer) {
-		panels.PanelGame(*surface)
-		agents.GetCurrentOrbitals(*surface)
-		player.Init(*surface)
-}
-*/
