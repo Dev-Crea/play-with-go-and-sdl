@@ -36,6 +36,10 @@ func RGBAOrange() (r, g, b, a uint8) {
 	return Red().R, Green().G, Green().B, 255
 }
 
+func RGBARed() (r, g, b, a uint8) {
+	return Red().R, Red().G, Red().B, 255
+}
+
 func RGBABlack() (r, g, b, a uint8) {
 	return 0, 0, 0, 255
 }

@@ -12,13 +12,14 @@ var (
 	playerPositionY int32 = constants.PANEL_GAME_CENTER_Y
 )
 
-func Init(surface sdl.Surface) {
+func Player(renderer *sdl.Renderer) {
+	err := renderer.SetDrawColor(colors.RGBARed())
+	if err != nil {
+		panic(err)
+	}
+
 	box := sdl.Rect{X: playerPositionX, Y: playerPositionY, W: 10, H: 10}
-	color := colors.Red()
-
-	pixel := sdl.MapRGBA(surface.Format, color.R, color.G, color.B, color.A)
-
-	err := surface.FillRect(&box, pixel)
+	err = renderer.FillRect(&box)
 	if err != nil {
 		panic(err)
 	}

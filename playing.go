@@ -116,7 +116,7 @@ func run() int {
 		go func() {
 			sdl.Do(func() {
 				boxes.PanelGame(renderer)
-				// Box Player
+				boxes.Player(renderer)
 				// Box Orbitals to system
 			})
 			wg.Done()
