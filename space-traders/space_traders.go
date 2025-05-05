@@ -20,12 +20,15 @@ func readTokenFile(file string) []byte {
 		panic(err)
 	}
 
-	// fmt.Println("File : %s", string(content))
 	return content
 }
 
 func readFileTokenAgent() string {
 	return string(readTokenFile(".token-agent"))
+}
+
+func readFileTokenApp() string {
+	return string(readTokenFile(".token-account"))
 }
 
 // TODO Register agent
@@ -58,8 +61,12 @@ func CreateOrReadTokenAgent() {
 	fmt.Printf("Status register %s", resp.Status)
 }
 */
+func headerAccount(request *http.Request) {
+	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", readFileTokenApp()))
+	request.Header.Add("Content-Type", "application/json")
+}
 
-func header(request *http.Request) {
+func headerAgent(request *http.Request) {
 	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", readFileTokenAgent()))
 	request.Header.Add("Content-Type", "application/json")
 }
@@ -74,6 +81,10 @@ func send(request *http.Request) []byte {
 	}
 
 	defer response.Body.Close() //nolint
+
+	if response.StatusCode == 401 {
+		ErrorUnauthorized()
+	}
 
 	data, err := io.ReadAll(response.Body)
 	if err != nil {
@@ -99,10 +110,8 @@ func GetSpaceTradersData(endpoint url.Values) []byte {
 		panic(err)
 	}
 
-	header(request)
-	data := send(request)
-
-	return data
+	headerAgent(request)
+	return send(request)
 }
 
 func PostSpaceTradersData(endpoint url.Values, body io.Reader) []byte {
@@ -111,8 +120,16 @@ func PostSpaceTradersData(endpoint url.Values, body io.Reader) []byte {
 		panic(err)
 	}
 
-	header(request)
-	data := send(request)
+	headerAgent(request)
+	return send(request)
+}
 
-	return data
+func PostSpaceTradersRegister(endpoint url.Values, body io.Reader) []byte {
+	request, err := http.NewRequestWithContext(context.Background(), http.MethodPost, apiEndpoint(endpoint), body)
+	if err != nil {
+		panic(err)
+	}
+
+	headerAccount(request)
+	return send(request)
 }
