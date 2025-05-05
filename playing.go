@@ -13,12 +13,6 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-const (
-	RectWidth  = 20
-	RectHeight = 20
-	NumRects   = assets.WINDOW_WIDTH / assets.WINDOW_HEIGHT
-)
-
 func main() {
 	var exitcode int
 
