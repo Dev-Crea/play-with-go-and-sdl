@@ -8,12 +8,9 @@ import (
 
 	"sdl/playing/space-traders/contracts"
 
-	system "sdl/playing/scenes/systems"
 	space_traders "sdl/playing/space-traders"
 
 	systems "sdl/playing/space-traders/systems"
-
-	"github.com/veandco/go-sdl2/sdl"
 )
 
 type Agent struct {
@@ -45,14 +42,8 @@ func Init() {
 	MyAgent = getAgentData()
 	MyPosition = getAgentStartData()
 
-	getAgentStartContract()
+	// getAgentStartContract()
 	// postAgentNegociateContract()
-}
-
-func GetCurrentOrbitals(surface sdl.Surface) {
-	for key := range MyPosition.Data.Orbitals {
-		system.System(surface, int32((key+1)*50)) //nolint
-	}
 }
 
 func getAgentData() Data {

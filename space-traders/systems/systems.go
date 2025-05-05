@@ -1,5 +1,12 @@
 package systems
 
+import (
+	"encoding/json"
+	"net/url"
+
+	space_traders "sdl/playing/space-traders"
+)
+
 type Orbital struct {
 	Symbol string
 }
@@ -38,10 +45,9 @@ type Data struct {
 }
 
 func Init() {
-	// getSystems()
+	getSystems()
 }
 
-/*
 func getSystems() {
 	endpoint := url.Values{}
 	endpoint.Add("api", "systems")
@@ -55,4 +61,3 @@ func getSystems() {
 		panic(err)
 	}
 }
-*/

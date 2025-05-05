@@ -42,8 +42,6 @@ func ErrorUnauthorized() {
 		panic(err)
 	}
 
-	// fmt.Printf("Registered ? %s", responseRegister.Data.Token)
-
 	replaceTokenAgent([]byte(responseRegister.Data.Token))
 }
 

@@ -31,36 +31,6 @@ func readFileTokenApp() string {
 	return string(readTokenFile(".token-account"))
 }
 
-// TODO Register agent
-// Create form when server is reject token agent
-/*
-func readFileTokenGame() string {
-	return string(readTokenFile(".token-agent"))
-}
-
-func CreateOrReadTokenAgent() {
-	requestURL := "https://api.spacetraders.io/v2/register"
-	// requestData := io.Reader("{'symbol': 'JEAN_JEAN', 'faction': 'AEGIS'}")
-	requestData := url.Values{}
-	requestData.Set("faction", "AEGIS")
-	requestData.Set("symbol", "JEANJEAN")
-
-	client := &http.Client{}
-	req, err := http.NewRequest(http.MethodPost, requestURL, strings.NewReader(requestData.Encode()))
-	if err != nil {
-		panic(err)
-	}
-
-	req.Header.Add("Authorisation", "Bearer %s"+readFileTokenGame)
-	req.Header.Add("Content-Type", "application/json")
-
-	resp, err := client.Do(req)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("Status register %s", resp.Status)
-}
-*/
 func headerAccount(request *http.Request) {
 	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", readFileTokenApp()))
 	request.Header.Add("Content-Type", "application/json")

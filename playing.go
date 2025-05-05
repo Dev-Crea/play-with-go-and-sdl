@@ -10,7 +10,6 @@ import (
 	"sdl/playing/constants"
 	event "sdl/playing/events"
 	"sdl/playing/space-traders/agents"
-	"sdl/playing/space-traders/systems"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -35,7 +34,16 @@ func main() {
 
 func initSpaceTradersData() {
 	agents.Init()
-	systems.Init()
+	/*
+		wg := sync.WaitGroup{}
+		wg.Add(1)
+		go func() {
+			agents.Init()
+			// systems.Init()
+			wg.Done()
+		}()
+		wg.Wait()
+	*/
 }
 
 func run() int {
@@ -117,7 +125,7 @@ func run() int {
 			sdl.Do(func() {
 				boxes.PanelGame(renderer)
 				boxes.Player(renderer)
-				// Box Orbitals to system
+				boxes.Orbitals(renderer)
 			})
 			wg.Done()
 		}()

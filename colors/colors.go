@@ -43,3 +43,7 @@ func RGBARed() (r, g, b, a uint8) {
 func RGBABlack() (r, g, b, a uint8) {
 	return 0, 0, 0, 255
 }
+
+func RGBABrown() (r, g, b, a uint8) {
+	return Brown().R, Brown().G, Brown().B, 255
+}
