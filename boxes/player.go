@@ -1,19 +1,18 @@
 package boxes
 
 import (
-	"sdl/playing/colors"
-	"sdl/playing/constants"
+	"sdl/playing/assets"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 var (
-	playerPositionX int32 = constants.PANEL_GAME_CENTER_X
-	playerPositionY int32 = constants.PANEL_GAME_CENTER_Y
+	playerPositionX int32 = assets.PANEL_GAME_CENTER_X
+	playerPositionY int32 = assets.PANEL_GAME_CENTER_Y
 )
 
 func Player(renderer *sdl.Renderer) {
-	err := renderer.SetDrawColor(colors.RGBARed())
+	err := renderer.SetDrawColor(assets.RGBARed())
 	if err != nil {
 		panic(err)
 	}
@@ -28,7 +27,7 @@ func Player(renderer *sdl.Renderer) {
 func moveX(ux int32, x int32) int32 {
 	newPosition := playerPositionX + x - ux
 
-	if newPosition == 0 || newPosition == constants.WINDOW_WIDTH-10 {
+	if newPosition == 0 || newPosition == assets.WINDOW_WIDTH-10 {
 		return playerPositionX
 	}
 
@@ -38,7 +37,7 @@ func moveX(ux int32, x int32) int32 {
 func moveY(uy int32, y int32) int32 {
 	newPosition := playerPositionY + y - uy
 
-	if newPosition == 0 || newPosition == constants.WINDOW_HEIGHT-10 {
+	if newPosition == 0 || newPosition == assets.WINDOW_HEIGHT-10 {
 		return playerPositionY
 	}
 
@@ -51,17 +50,17 @@ func move(ux int32, x int32, uy int32, y int32) {
 }
 
 func MoveLeft() {
-	move(constants.MOVE_PLAYER_SIZE, 0, 0, 0)
+	move(assets.MOVE_PLAYER_SIZE, 0, 0, 0)
 }
 
 func MoveRight() {
-	move(0, constants.MOVE_PLAYER_SIZE, 0, 0)
+	move(0, assets.MOVE_PLAYER_SIZE, 0, 0)
 }
 
 func MoveTop() {
-	move(0, 0, constants.MOVE_PLAYER_SIZE, 0)
+	move(0, 0, assets.MOVE_PLAYER_SIZE, 0)
 }
 
 func MoveBottom() {
-	move(0, 0, 0, constants.MOVE_PLAYER_SIZE)
+	move(0, 0, 0, assets.MOVE_PLAYER_SIZE)
 }

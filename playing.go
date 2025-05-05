@@ -5,9 +5,8 @@ import (
 	"os"
 	"sync"
 
+	"sdl/playing/assets"
 	"sdl/playing/boxes"
-	"sdl/playing/colors"
-	"sdl/playing/constants"
 	event "sdl/playing/events"
 	"sdl/playing/space-traders/agents"
 
@@ -17,7 +16,7 @@ import (
 const (
 	RectWidth  = 20
 	RectHeight = 20
-	NumRects   = constants.WINDOW_WIDTH / constants.WINDOW_HEIGHT
+	NumRects   = assets.WINDOW_WIDTH / assets.WINDOW_HEIGHT
 )
 
 func main() {
@@ -52,11 +51,11 @@ func run() int {
 	var err error
 
 	sdl.Do(func() {
-		window, err = sdl.CreateWindow(constants.WINDOW_TITLE,
+		window, err = sdl.CreateWindow(assets.WINDOW_TITLE,
 			sdl.WINDOWPOS_UNDEFINED,
 			sdl.WINDOWPOS_UNDEFINED,
-			constants.WINDOW_WIDTH,
-			constants.WINDOW_HEIGHT,
+			assets.WINDOW_WIDTH,
+			assets.WINDOW_HEIGHT,
 			sdl.WINDOW_SHOWN)
 	})
 	if err != nil {
@@ -108,12 +107,12 @@ func run() int {
 				panic(err)
 			}
 
-			err = renderer.SetDrawColor(colors.RGBABlack())
+			err = renderer.SetDrawColor(assets.RGBABlack())
 			if err != nil {
 				panic(err)
 			}
 
-			err = renderer.FillRect(&sdl.Rect{X: 0, Y: 0, W: constants.WINDOW_WIDTH, H: constants.WINDOW_HEIGHT})
+			err = renderer.FillRect(&sdl.Rect{X: 0, Y: 0, W: assets.WINDOW_WIDTH, H: assets.WINDOW_HEIGHT})
 			if err != nil {
 				panic(err)
 			}
@@ -133,7 +132,7 @@ func run() int {
 
 		sdl.Do(func() {
 			renderer.Present()
-			sdl.Delay(1000 / constants.FRAMERATE)
+			sdl.Delay(1000 / assets.FRAMERATE)
 		})
 	}
 

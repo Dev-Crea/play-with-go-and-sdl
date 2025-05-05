@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"sdl/playing/constants"
+	"sdl/playing/assets"
 )
 
 func readTokenFile(file string) []byte {
@@ -67,7 +67,7 @@ func send(request *http.Request) []byte {
 }
 
 func apiEndpoint(endpoint url.Values) string {
-	u, err := url.Parse(constants.SPACE_TRADER_API)
+	u, err := url.Parse(assets.SPACE_TRADER_API)
 	if err != nil {
 		panic(err)
 	}

@@ -1,8 +1,7 @@
 package boxes
 
 import (
-	"sdl/playing/colors"
-	"sdl/playing/constants"
+	"sdl/playing/assets"
 	"sdl/playing/space-traders/agents"
 
 	"github.com/veandco/go-sdl2/sdl"
@@ -11,12 +10,12 @@ import (
 
 func PanelGame(renderer *sdl.Renderer) {
 	// Draw rect background panel game (orange)
-	err := renderer.SetDrawColor(colors.RGBAOrange())
+	err := renderer.SetDrawColor(assets.RGBAOrange())
 	if err != nil {
 		panic(err)
 	}
 
-	boxBackground := sdl.Rect{X: 0, Y: constants.WINDOW_HEIGHT - constants.PANEL_HEIGHT, W: constants.WINDOW_WIDTH, H: constants.PANEL_HEIGHT}
+	boxBackground := sdl.Rect{X: 0, Y: assets.WINDOW_HEIGHT - assets.PANEL_HEIGHT, W: assets.WINDOW_WIDTH, H: assets.PANEL_HEIGHT}
 
 	err = renderer.FillRect(&boxBackground)
 	if err != nil {
@@ -43,7 +42,7 @@ func PanelGame(renderer *sdl.Renderer) {
 	}
 	defer ttf.Quit()
 
-	font, err := ttf.OpenFont(constants.FONT_PATH, constants.FONT_PANEL_SIZE)
+	font, err := ttf.OpenFont(assets.FONT_PATH, assets.FONT_PANEL_SIZE)
 	if err != nil {
 		panic(err)
 	}
@@ -57,14 +56,14 @@ func PanelGame(renderer *sdl.Renderer) {
 }
 
 func writeInPanel(font ttf.Font, word string, surface *sdl.Surface, renderer *sdl.Renderer, x, y int32) {
-	text, err := font.RenderUTF8Solid(word, colors.Green())
+	text, err := font.RenderUTF8Solid(word, assets.Green())
 	if err != nil {
 		panic(err)
 	}
 
 	defer text.Free()
 
-	boxTextDest := sdl.Rect{X: x, Y: y, W: 150, H: constants.FONT_PANEL_SIZE}
+	boxTextDest := sdl.Rect{X: x, Y: y, W: 150, H: assets.FONT_PANEL_SIZE}
 
 	err = text.Blit(nil, surface, &boxTextDest)
 	if err != nil {

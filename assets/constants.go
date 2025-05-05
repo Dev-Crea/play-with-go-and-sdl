@@ -1,4 +1,4 @@
-package constants
+package assets
 
 const (
 	WINDOW_TITLE  = "Space Traders The PixelGames"
