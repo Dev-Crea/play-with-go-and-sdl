@@ -1,4 +1,4 @@
-package player
+package boxes
 
 import (
 	"sdl/playing/colors"

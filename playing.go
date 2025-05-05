@@ -5,10 +5,10 @@ import (
 	"os"
 	"sync"
 
+	"sdl/playing/boxes"
 	"sdl/playing/colors"
 	"sdl/playing/constants"
 	event "sdl/playing/events"
-	"sdl/playing/scenes/panels"
 	"sdl/playing/space-traders/agents"
 	"sdl/playing/space-traders/systems"
 
@@ -115,7 +115,7 @@ func run() int {
 		wg.Add(1)
 		go func() {
 			sdl.Do(func() {
-				panels.PanelGame(renderer)
+				boxes.PanelGame(renderer)
 				// Box Player
 				// Box Orbitals to system
 			})

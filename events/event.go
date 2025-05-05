@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	player "sdl/playing/scenes/players"
+	"sdl/playing/boxes"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -36,21 +36,21 @@ func HandleEvent() bool {
 			if t.Type == sdl.KEYDOWN {
 				switch t.Keysym.Sym {
 				case sdl.K_LEFT:
-					player.MoveLeft()
+					boxes.MoveLeft()
 				case sdl.K_q:
-					player.MoveLeft()
+					boxes.MoveLeft()
 				case sdl.K_DOWN:
-					player.MoveBottom()
+					boxes.MoveBottom()
 				case sdl.K_s:
-					player.MoveBottom()
+					boxes.MoveBottom()
 				case sdl.K_RIGHT:
-					player.MoveRight()
+					boxes.MoveRight()
 				case sdl.K_d:
-					player.MoveRight()
+					boxes.MoveRight()
 				case sdl.K_UP:
-					player.MoveTop()
+					boxes.MoveTop()
 				case sdl.K_z:
-					player.MoveTop()
+					boxes.MoveTop()
 				case sdl.K_ESCAPE:
 					running = false
 				}
