@@ -56,10 +56,6 @@ func PanelGame(renderer *sdl.Renderer) {
 	writeInPanel(*font, myAgent.GetFleet(), surface, renderer, 500, 560)
 }
 
-func positionPanelLeft(x, y int32) sdl.Rect {
-	return sdl.Rect{X: x, Y: y, W: 150, H: constants.FONT_PANEL_SIZE}
-}
-
 func writeInPanel(font ttf.Font, word string, surface *sdl.Surface, renderer *sdl.Renderer, x, y int32) {
 	text, err := font.RenderUTF8Solid(word, colors.Green())
 	if err != nil {
