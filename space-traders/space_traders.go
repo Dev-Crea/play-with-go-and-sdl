@@ -82,7 +82,7 @@ func send(request *http.Request) []byte {
 
 	defer response.Body.Close() //nolint
 
-	if response.StatusCode == 401 {
+	if response.StatusCode == http.StatusUnauthorized {
 		ErrorUnauthorized()
 	}
 
