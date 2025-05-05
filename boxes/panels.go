@@ -2,7 +2,7 @@ package boxes
 
 import (
 	"sdl/playing/assets"
-	"sdl/playing/space-traders/agents"
+	"sdl/playing/space-traders/models"
 
 	"github.com/veandco/go-sdl2/sdl"
 	"github.com/veandco/go-sdl2/ttf"
@@ -23,7 +23,7 @@ func PanelGame(renderer *sdl.Renderer) {
 	}
 
 	// Writte info about this game
-	myAgent := agents.MyAgent
+	myAgent := models.MyAgent
 
 	window, err := renderer.GetWindow()
 	if err != nil {

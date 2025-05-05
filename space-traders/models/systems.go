@@ -1,4 +1,4 @@
-package systems
+package models
 
 import (
 	"encoding/json"
@@ -26,7 +26,7 @@ type Chart struct {
 	SubmittedOn string
 }
 
-type System struct {
+type SystemResponse struct {
 	SystemSymbol        string
 	Symbol              string
 	Type                string
@@ -40,8 +40,8 @@ type System struct {
 	IsUnderConstruction bool
 }
 
-type Data struct {
-	Data System
+type SystemResponseData struct {
+	Data SystemResponse
 }
 
 func Init() {
@@ -54,7 +54,7 @@ func getSystems() {
 
 	data := space_traders.GetSpaceTradersData(endpoint)
 
-	var responseSystem Data
+	var responseSystem SystemResponseData
 
 	err := json.Unmarshal(data, &responseSystem)
 	if err != nil {

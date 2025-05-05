@@ -2,7 +2,7 @@ package boxes
 
 import (
 	"sdl/playing/assets"
-	"sdl/playing/space-traders/agents"
+	"sdl/playing/space-traders/models"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -22,7 +22,7 @@ func orbital(renderer *sdl.Renderer, position int32) {
 }
 
 func Orbitals(renderer *sdl.Renderer) {
-	for key := range agents.MyPosition.Data.Orbitals {
+	for key := range models.MyPosition.Data.Orbitals {
 		orbital(renderer, int32((key+1)*50))
 	}
 }

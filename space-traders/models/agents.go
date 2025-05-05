@@ -1,4 +1,4 @@
-package agents
+package models
 
 import (
 	"encoding/json"
@@ -6,14 +6,10 @@ import (
 	"net/url"
 	"strings"
 
-	"sdl/playing/space-traders/contracts"
-
 	space_traders "sdl/playing/space-traders"
-
-	systems "sdl/playing/space-traders/systems"
 )
 
-type Agent struct {
+type AgentResponse struct {
 	Symbol          string
 	Headquarters    string
 	Credits         int32
@@ -22,8 +18,8 @@ type Agent struct {
 	Location        Location
 }
 
-type Data struct {
-	Data Agent
+type AgentResponseData struct {
+	Data AgentResponse
 }
 
 type Location struct {
@@ -33,12 +29,12 @@ type Location struct {
 }
 
 var (
-	MyAgent    Data
-	MyPosition systems.Data
+	MyAgent    AgentResponseData
+	MyPosition SystemResponseData
 	MyContract string
 )
 
-func Init() {
+func InitAgent() {
 	MyAgent = getAgentData()
 	MyPosition = getAgentStartData()
 
@@ -46,13 +42,13 @@ func Init() {
 	// postAgentNegociateContract()
 }
 
-func getAgentData() Data {
+func getAgentData() AgentResponseData {
 	endpoint := url.Values{}
 	endpoint.Add("api", "my")
 	endpoint.Add("api", "agent")
 	data := space_traders.GetSpaceTradersData(endpoint)
 
-	var responseAgent Data
+	var responseAgent AgentResponseData
 
 	err := json.Unmarshal(data, &responseAgent)
 	if err != nil {
@@ -62,7 +58,7 @@ func getAgentData() Data {
 	return responseAgent
 }
 
-func getAgentStartData() systems.Data {
+func getAgentStartData() SystemResponseData {
 	endpoint := url.Values{}
 	endpoint.Add("api", "systems")
 	endpoint.Add("api", MyAgent.GetLocationSystem())
@@ -70,7 +66,7 @@ func getAgentStartData() systems.Data {
 	endpoint.Add("api", MyAgent.GetLocationWaypoint())
 	data := space_traders.GetSpaceTradersData(endpoint)
 
-	var responsePosition systems.Data
+	var responsePosition SystemResponseData
 
 	err := json.Unmarshal(data, &responsePosition)
 	if err != nil {
@@ -80,13 +76,13 @@ func getAgentStartData() systems.Data {
 	return responsePosition
 }
 
-func getAgentStartContract() contracts.Data {
+func getAgentStartContract() ContractResponseData {
 	endpoint := url.Values{}
 	endpoint.Add("api", "my")
 	endpoint.Add("api", "contracts")
 	data := space_traders.GetSpaceTradersData(endpoint)
 
-	var responseContract contracts.Data
+	var responseContract ContractResponseData
 
 	err := json.Unmarshal(data, &responseContract)
 	if err != nil {
@@ -111,38 +107,38 @@ func postAgentNegociateContract() {
 }
 */
 
-func (x Data) GetSymbol() string {
+func (x AgentResponseData) GetSymbol() string {
 	return "Symbol : " + x.Data.Symbol
 }
 
-func (x Data) GetHeadquarter() string {
+func (x AgentResponseData) GetHeadquarter() string {
 	return "Headquarter : " + x.Data.Headquarters
 }
 
-func (x Data) GetCredits() string {
+func (x AgentResponseData) GetCredits() string {
 	return fmt.Sprintf("Credits : %v ", x.Data.Credits)
 }
 
-func (x Data) GetFaction() string {
+func (x AgentResponseData) GetFaction() string {
 	return "Faction : " + x.Data.StartingFaction
 }
 
-func (x Data) GetFleet() string {
+func (x AgentResponseData) GetFleet() string {
 	return fmt.Sprintf("Fleet : %v", x.Data.ShipCount)
 }
 
-func (x Data) GetLocationSector() string {
+func (x AgentResponseData) GetLocationSector() string {
 	return x.parsingLocation()[0]
 }
 
-func (x Data) GetLocationSystem() string {
+func (x AgentResponseData) GetLocationSystem() string {
 	return MyAgent.GetLocationSector() + "-" + x.parsingLocation()[1]
 }
 
-func (x Data) GetLocationWaypoint() string {
+func (x AgentResponseData) GetLocationWaypoint() string {
 	return MyAgent.GetLocationSystem() + "-" + x.parsingLocation()[2]
 }
 
-func (x Data) parsingLocation() []string {
+func (x AgentResponseData) parsingLocation() []string {
 	return strings.Split(x.Data.Headquarters, "-")
 }

@@ -8,7 +8,7 @@ import (
 	"sdl/playing/assets"
 	"sdl/playing/boxes"
 	event "sdl/playing/events"
-	"sdl/playing/space-traders/agents"
+	"sdl/playing/space-traders/models"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -32,7 +32,7 @@ func main() {
 }
 
 func initSpaceTradersData() {
-	agents.Init()
+	models.InitAgent()
 	/*
 		wg := sync.WaitGroup{}
 		wg.Add(1)
