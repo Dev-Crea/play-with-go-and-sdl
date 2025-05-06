@@ -1,7 +1,8 @@
-package systems
+package models
 
 import (
 	"encoding/json"
+	"net/url"
 
 	space_traders "sdl/playing/space-traders"
 )
@@ -25,12 +26,12 @@ type Chart struct {
 	SubmittedOn string
 }
 
-type System struct {
+type SystemResponse struct {
 	SystemSymbol        string
 	Symbol              string
 	Type                string
-	X                   uint32
-	Y                   uint32
+	X                   int32
+	Y                   int32
 	Orbitals            []Orbital
 	Traits              []Trait
 	Modifiers           []string
@@ -39,8 +40,8 @@ type System struct {
 	IsUnderConstruction bool
 }
 
-type Data struct {
-	Data System
+type SystemResponseData struct {
+	Data SystemResponse
 }
 
 func Init() {
@@ -48,9 +49,15 @@ func Init() {
 }
 
 func getSystems() {
-	data := space_traders.GetSpaceTradersData("/systems")
+	endpoint := url.Values{}
+	endpoint.Add("api", "systems")
 
-	var responseSystem Data
+	data := space_traders.GetSpaceTradersData(endpoint)
 
-	json.Unmarshal(data, &responseSystem)
+	var responseSystem SystemResponseData
+
+	err := json.Unmarshal(data, &responseSystem)
+	if err != nil {
+		panic(err)
+	}
 }

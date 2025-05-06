@@ -1,6 +1,6 @@
-package waypoints
+package models
 
-func Init() {
+func InitWaypoints() {
 	getWaypoints()
 }
 
