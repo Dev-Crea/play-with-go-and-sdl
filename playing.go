@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"os"
-	"sync"
-
 	"sdl/playing/assets"
 	"sdl/playing/boxes"
-	event "sdl/playing/events"
 	"sdl/playing/space-traders/models"
+	"sync"
+
+	event "sdl/playing/events"
 
 	"github.com/veandco/go-sdl2/sdl"
 )

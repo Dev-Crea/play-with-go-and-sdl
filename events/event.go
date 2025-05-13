@@ -2,9 +2,8 @@ package event
 
 import (
 	"fmt"
-	"sync"
-
 	"sdl/playing/boxes"
+	"sync"
 
 	"github.com/veandco/go-sdl2/sdl"
 )

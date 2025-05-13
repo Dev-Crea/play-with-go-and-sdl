@@ -8,9 +8,8 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"time"
-
 	"sdl/playing/assets"
+	"time"
 )
 
 func readTokenFile(file string) []byte {
