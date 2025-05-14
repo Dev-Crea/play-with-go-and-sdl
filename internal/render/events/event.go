@@ -1,9 +1,8 @@
 package event
 
 import (
-	"sync"
-
 	"sdl/playing/internal/render/boxes"
+	"sync"
 
 	"github.com/rs/zerolog"
 	"github.com/veandco/go-sdl2/sdl"

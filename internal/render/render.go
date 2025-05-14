@@ -2,10 +2,10 @@ package render
 
 import (
 	"os"
-	"sync"
-
 	"sdl/playing/internal/render/assets"
 	"sdl/playing/internal/render/boxes"
+	"sync"
+
 	event "sdl/playing/internal/render/events"
 	tools "sdl/playing/pkg/Tools"
 
