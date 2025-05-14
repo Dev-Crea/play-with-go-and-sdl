@@ -96,9 +96,7 @@ func getAgentStartContract() ContractResponseData {
 
 	return responseContract
 }
-*/
 
-/*
 func postAgentNegociateContract() {
 	endpoint := url.Values{}
 	endpoint.Add("api", "my")

@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"net/url"
 	"os"
+	"path/filepath"
 )
 
 // TODO : Change token manipulation
 const (
-	TOKEN_AGENT_PATH   = "./.token-agent"
+	TOKEN_AGENT_PATH   = "../.token-agent"
 	TOKEN_ACCOUNT_PATH = "../.token-account" //nolint
 )
 
@@ -69,4 +70,16 @@ func ReadFileTokenAgent() string {
 
 func ReadFileTokenApp() string {
 	return string(readTokenFile(TOKEN_ACCOUNT_PATH))
+}
+
+func readTokenFile(file string) []byte {
+	safeFile := filepath.Clean(file)
+	content, err := os.ReadFile(safeFile)
+	if err != nil {
+		LoggerAPI.Error().Stack().Err(err).Msg("Read Token file error")
+
+		os.Exit(1)
+	}
+
+	return content
 }

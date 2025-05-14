@@ -1,7 +1,9 @@
 package tools
 
 import (
+	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/pkg/errors"
@@ -9,17 +11,6 @@ import (
 	"github.com/rs/zerolog/pkgerrors"
 )
 
-/*
-		NOTE: Level to logger
-
-	    panic (zerolog.PanicLevel, 5)
-	    fatal (zerolog.FatalLevel, 4)
-	    error (zerolog.ErrorLevel, 3)
-	    warn (zerolog.WarnLevel, 2)
-	    info (zerolog.InfoLevel, 1)
-	    debug (zerolog.DebugLevel, 0)
-	    trace (zerolog.TraceLevel, -1)
-*/
 func InitLoggerByService(name string, level zerolog.Level) *zerolog.Logger {
 	var logger zerolog.Logger
 
@@ -29,31 +20,35 @@ func InitLoggerByService(name string, level zerolog.Level) *zerolog.Logger {
 	}
 	zerolog.SetGlobalLevel(level)
 
-	if level == zerolog.InfoLevel {
-		logger = loggerInfo(name)
-	}
 	switch level {
-	default:
-		logger = loggerDebug(name)
 	case zerolog.DebugLevel:
 		logger = loggerDebug(name)
 	case zerolog.InfoLevel:
 		logger = loggerInfo(name)
 	case zerolog.ErrorLevel:
 		logger = loggerError(name)
+	default:
+		logger = loggerDebug(name)
 	}
 
-	logger.Debug().Msg("Start application in DEBUG mode !")
+	logger.Info().Msgf("Start application in %s mode with level %s !", name, level)
 
 	return &logger
 }
 
+func loggerOutput() zerolog.ConsoleWriter {
+	return zerolog.ConsoleWriter{
+		Out:           os.Stdout,
+		NoColor:       false,
+		TimeFormat:    time.RFC3339,
+		PartsOrder:    []string{"level", "Service", "time", "message"},
+		FieldsExclude: []string{"Service"},
+		FormatLevel:   func(i interface{}) string { return strings.ToUpper(fmt.Sprintf("%-6s", i)) },
+	}
+}
+
 func loggerDebug(name string) zerolog.Logger {
-	return zerolog.New(zerolog.ConsoleWriter{
-		Out:        os.Stdout,
-		NoColor:    true,
-		TimeFormat: time.RFC3339,
-	}).
+	return zerolog.New(loggerOutput()).
 		With().
 		Timestamp().
 		Str("Service", name).
@@ -61,7 +56,7 @@ func loggerDebug(name string) zerolog.Logger {
 }
 
 func loggerInfo(name string) zerolog.Logger {
-	return zerolog.New(os.Stdout).
+	return zerolog.New(loggerOutput()).
 		With().
 		Timestamp().
 		Str("Service", name).

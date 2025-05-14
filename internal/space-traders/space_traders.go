@@ -6,8 +6,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"os"
-	"path/filepath"
 	"time"
 
 	"sdl/playing/internal/render/assets"
@@ -51,19 +49,6 @@ func PostSpaceTradersRegister(endpoint url.Values, body io.Reader) []byte {
 	return send(request)
 }
 
-func readTokenFile(file string) []byte {
-	safeFile := filepath.Clean(file)
-	LoggerAPI.Debug().Str("File", file).Msg("Read token ")
-	content, err := os.ReadFile(safeFile)
-	if err != nil {
-		LoggerAPI.Error().Stack().Err(err).Msg("Read Token file error")
-
-		os.Exit(1)
-	}
-
-	return content
-}
-
 func headerAccount(request *http.Request) {
 	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", ReadFileTokenApp()))
 	request.Header.Add("Content-Type", "application/json")
@@ -95,7 +80,11 @@ func send(request *http.Request) []byte {
 		LoggerAPI.Error().Stack().Err(err).Msg("Parse response failed")
 	}
 
-	LoggerAPI.Debug().RawJSON("Data", data).Msgf("[%s] %s", request.Method, request.URL.String())
+	LoggerAPI.Debug().
+		Str("URL", request.URL.String()).
+		Str("Method", request.Method).
+		RawJSON("Data", data).
+		Msg("")
 
 	return data
 }
