@@ -1,7 +1,7 @@
 package boxes
 
 import (
-	"sdl/playing/assets"
+	"sdl/playing/internal/render/assets"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -14,13 +14,13 @@ var (
 func Player(renderer *sdl.Renderer) {
 	err := renderer.SetDrawColor(assets.RGBARed())
 	if err != nil {
-		panic(err)
+		LoggerSDL.Error().Stack().Err(err).Msg("")
 	}
 
 	box := sdl.Rect{X: playerPositionX, Y: playerPositionY, W: 10, H: 10}
 	err = renderer.FillRect(&box)
 	if err != nil {
-		panic(err)
+		LoggerSDL.Error().Stack().Err(err).Msg("")
 	}
 }
 

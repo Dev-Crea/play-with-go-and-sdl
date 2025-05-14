@@ -1,16 +1,17 @@
 package event
 
 import (
-	"fmt"
-	"sdl/playing/boxes"
 	"sync"
 
+	"sdl/playing/internal/render/boxes"
+
+	"github.com/rs/zerolog"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 var runningMutext sync.Mutex
 
-func HandleEvent() bool {
+func HandleEvent(logger zerolog.Logger) bool {
 	running := true
 	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 		switch t := event.(type) {
@@ -20,17 +21,17 @@ func HandleEvent() bool {
 			runningMutext.Unlock()
 			/*
 				case *sdl.MouseMotionEvent:
-					fmt.Printf("[%d ms] MouseMotion\ttype:%d\tid:%d\tx:%d\ty:%d\txrel:%d\tyrel:%d\n",
+					logger.Debug.Msgf("[%d ms] MouseMotion type:%d id:%d x:%d y:%d xrel:%d yrel:%d\n",
 						t.Timestamp, t.Type, t.Which, t.X, t.Y, t.XRel, t.YRel)
 				case *sdl.MouseButtonEvent:
-					fmt.Printf("[%d ms] MouseButton\ttype:%d\tid:%d\tx:%d\ty:%d\tbutton:%d\tstate:%d\n",
+					logger.Debug.Msgf("[%d ms] MouseButton type:%d id:%d x:%d y:%d button:%d state:%d\n",
 						t.Timestamp, t.Type, t.Which, t.X, t.Y, t.Button, t.State)
 				case *sdl.MouseWheelEvent:
-					fmt.Printf("[%d ms] MouseWheel\ttype:%d\tid:%d\tx:%d\ty:%d\n",
+					logger.Debug.Msgf("[%d ms] MouseWheel type:%d id:%d x:%d y:%d\n",
 						t.Timestamp, t.Type, t.Which, t.X, t.Y)
 			*/
 		case *sdl.KeyboardEvent:
-			fmt.Printf("[%d ms] Keyboard\ttype:%d\tsym:%c\tkeycode:%v\tmodifiers:%d\tstate:%d\trepeat:%d\n",
+			logger.Debug().Msgf("[%d ms] Keyboard type: \"%d\" sym: \"%c\" keycode: \"%v\" modifiers: \"%d\" state: \"%d\" repeat: \"%d\"",
 				t.Timestamp, t.Type, t.Keysym.Sym, t.Keysym.Scancode, t.Keysym.Mod, t.State, t.Repeat)
 			if t.Type == sdl.KEYDOWN {
 				switch t.Keysym.Sym {
@@ -55,7 +56,7 @@ func HandleEvent() bool {
 				}
 			}
 		case *sdl.UserEvent:
-			fmt.Printf("[%d ms] UserEvent\tcode:%d\n", t.Timestamp, t.Code)
+			logger.Debug().Msgf("[%d ms] UserEvent code:%d\n", t.Timestamp, t.Code)
 		}
 	}
 

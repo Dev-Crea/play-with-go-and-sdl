@@ -1,8 +1,8 @@
 package boxes
 
 import (
-	"sdl/playing/assets"
-	"sdl/playing/space-traders/models"
+	"sdl/playing/internal/render/assets"
+	"sdl/playing/internal/space-traders/models"
 
 	"github.com/veandco/go-sdl2/sdl"
 )
@@ -10,7 +10,7 @@ import (
 func orbital(renderer *sdl.Renderer, position int32) {
 	err := renderer.SetDrawColor(assets.RGBABrown())
 	if err != nil {
-		panic(err)
+		models.LoggerAPI.Error().Err(err).Msg("")
 	}
 
 	positionX := assets.PANEL_GAME_CENTER_X - position

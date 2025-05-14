@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strings"
 
-	space_traders "sdl/playing/space-traders"
+	space_traders "sdl/playing/internal/space-traders"
 )
 
 type AgentResponse struct {
@@ -43,16 +43,19 @@ func InitAgent() {
 }
 
 func getAgentData() AgentResponseData {
+	LoggerAPI.Debug().Msg("Get Agent data")
+
 	endpoint := url.Values{}
 	endpoint.Add("api", "my")
 	endpoint.Add("api", "agent")
+
 	data := space_traders.GetSpaceTradersData(endpoint)
 
 	var responseAgent AgentResponseData
 
 	err := json.Unmarshal(data, &responseAgent)
 	if err != nil {
-		panic(err)
+		LoggerAPI.Error().Stack().Err(err).Msg("Error get agent data")
 	}
 
 	return responseAgent
@@ -70,12 +73,13 @@ func getAgentStartData() SystemResponseData {
 
 	err := json.Unmarshal(data, &responsePosition)
 	if err != nil {
-		panic(err)
+		LoggerAPI.Error().Stack().Err(err).Msg("Error get agent start data")
 	}
 
 	return responsePosition
 }
 
+/*
 func getAgentStartContract() ContractResponseData {
 	endpoint := url.Values{}
 	endpoint.Add("api", "my")
@@ -92,6 +96,7 @@ func getAgentStartContract() ContractResponseData {
 
 	return responseContract
 }
+*/
 
 /*
 func postAgentNegociateContract() {
@@ -108,11 +113,11 @@ func postAgentNegociateContract() {
 */
 
 func (x AgentResponseData) GetSymbol() string {
-	return "Symbol : " + x.Data.Symbol
+	return fmt.Sprintf("Symbol : %s", x.Data.Symbol)
 }
 
 func (x AgentResponseData) GetHeadquarter() string {
-	return "Headquarter : " + x.Data.Headquarters
+	return fmt.Sprintf("Headquarter : %s", x.Data.Headquarters)
 }
 
 func (x AgentResponseData) GetCredits() string {
@@ -120,7 +125,7 @@ func (x AgentResponseData) GetCredits() string {
 }
 
 func (x AgentResponseData) GetFaction() string {
-	return "Faction : " + x.Data.StartingFaction
+	return fmt.Sprintf("Faction : %s", x.Data.StartingFaction)
 }
 
 func (x AgentResponseData) GetFleet() string {
@@ -132,11 +137,11 @@ func (x AgentResponseData) GetLocationSector() string {
 }
 
 func (x AgentResponseData) GetLocationSystem() string {
-	return MyAgent.GetLocationSector() + "-" + x.parsingLocation()[1]
+	return fmt.Sprintf("%s-%s", MyAgent.GetLocationSector(), x.parsingLocation()[1])
 }
 
 func (x AgentResponseData) GetLocationWaypoint() string {
-	return MyAgent.GetLocationSystem() + "-" + x.parsingLocation()[2]
+	return fmt.Sprintf("%s-%s", MyAgent.GetLocationSystem(), x.parsingLocation()[2])
 }
 
 func (x AgentResponseData) parsingLocation() []string {

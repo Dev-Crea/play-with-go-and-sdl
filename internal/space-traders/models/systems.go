@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/url"
 
-	space_traders "sdl/playing/space-traders"
+	space_traders "sdl/playing/internal/space-traders"
 )
 
 type Orbital struct {
@@ -44,7 +44,7 @@ type SystemResponseData struct {
 	Data SystemResponse
 }
 
-func Init() {
+func InitSystem() {
 	getSystems()
 }
 
@@ -58,6 +58,6 @@ func getSystems() {
 
 	err := json.Unmarshal(data, &responseSystem)
 	if err != nil {
-		panic(err)
+		LoggerAPI.Error().Stack().Err(err).Msg("Error get systems data")
 	}
 }

@@ -7,6 +7,7 @@ type ContractResponseMeta struct {
 	Page  int32
 	Limit int32
 }
+
 type ContractResponseData struct {
 	// Data Contract
 	Meta ContractResponseMeta

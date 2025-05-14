@@ -1,48 +1,27 @@
-package main
+package render
 
 import (
-	"fmt"
 	"os"
-	"sdl/playing/assets"
-	"sdl/playing/boxes"
-	"sdl/playing/space-traders/models"
 	"sync"
 
-	event "sdl/playing/events"
+	"sdl/playing/internal/render/assets"
+	"sdl/playing/internal/render/boxes"
+	event "sdl/playing/internal/render/events"
+	tools "sdl/playing/pkg/Tools"
 
+	"github.com/rs/zerolog"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-func main() {
-	var exitcode int
-
-	initSpaceTradersData()
-
-	sdl.Main(func() {
-		exitcode = run()
-	})
-
-	os.Exit(exitcode)
-}
-
-func initSpaceTradersData() {
-	models.InitAgent()
-	/*
-		wg := sync.WaitGroup{}
-		wg.Add(1)
-		go func() {
-			agents.Init()
-			// systems.Init()
-			wg.Done()
-		}()
-		wg.Wait()
-	*/
-}
-
-func run() int {
+func Run() int {
 	var window *sdl.Window
 	var renderer *sdl.Renderer
 	var err error
+
+	// loggerSDL := InitLoggerByService("SDL", zerolog.DebugLevel)
+	loggerSDL := tools.InitLoggerByService("SDL", zerolog.DebugLevel)
+
+	boxes.Init(loggerSDL)
 
 	sdl.Do(func() {
 		window, err = sdl.CreateWindow(assets.WINDOW_TITLE,
@@ -53,15 +32,16 @@ func run() int {
 			sdl.WINDOW_SHOWN)
 	})
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to create window: %s\n", err)
-		return 1
+		loggerSDL.Error().Stack().Err(err).Msg("Failed to create window")
+
+		os.Exit(1)
 	}
 
 	defer func() {
 		sdl.Do(func() {
 			err := window.Destroy()
 			if err != nil {
-				panic(err)
+				loggerSDL.Error().Stack().Err(err).Msg("Failed destroy window")
 			}
 		})
 	}()
@@ -70,15 +50,16 @@ func run() int {
 		renderer, err = sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	})
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", err)
-		return 2
+		loggerSDL.Error().Stack().Err(err).Msg("Failed to create renderer")
 	}
 
 	defer func() {
 		sdl.Do(func() {
 			err := renderer.Destroy()
 			if err != nil {
-				panic(err)
+				loggerSDL.Error().Stack().Err(err).Msg("Failed destroy renderer")
+
+				os.Exit(1)
 			}
 		})
 	}()
@@ -86,7 +67,9 @@ func run() int {
 	sdl.Do(func() {
 		err := renderer.Clear()
 		if err != nil {
-			panic(err)
+			loggerSDL.Error().Stack().Err(err).Msg("Failed clear renderer")
+
+			os.Exit(1)
 		}
 	})
 
@@ -94,21 +77,28 @@ func run() int {
 
 	for running {
 		sdl.Do(func() {
-			running = event.HandleEvent()
+			running = event.HandleEvent(*loggerSDL)
 
 			err := renderer.Clear()
 			if err != nil {
-				panic(err)
+				loggerSDL.Error().Stack().Err(err).Msg("Failed clear renderer")
+
+				os.Exit(1)
 			}
 
 			err = renderer.SetDrawColor(assets.RGBABlack())
 			if err != nil {
-				panic(err)
+				loggerSDL.Error().Stack().Err(err).Msg("Failed draw backgound renderer")
+
+				os.Exit(1)
 			}
 
 			err = renderer.FillRect(&sdl.Rect{X: 0, Y: 0, W: assets.WINDOW_WIDTH, H: assets.WINDOW_HEIGHT})
 			if err != nil {
-				panic(err)
+				loggerSDL.Error().Stack().Err(err).Msg("Failed fill backgound renderer")
+
+				os.Exit(1)
+
 			}
 		})
 
