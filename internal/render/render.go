@@ -18,7 +18,6 @@ func Run() int {
 	var renderer *sdl.Renderer
 	var err error
 
-	// loggerSDL := InitLoggerByService("SDL", zerolog.DebugLevel)
 	loggerSDL := tools.InitLoggerByService("SDL", zerolog.DebugLevel)
 
 	boxes.Init(loggerSDL)

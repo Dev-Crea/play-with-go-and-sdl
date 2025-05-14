@@ -63,3 +63,4 @@ go.work
 ## Custom rules
 playing
 .token-*
+*.log

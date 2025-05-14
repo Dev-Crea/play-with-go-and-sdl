@@ -96,7 +96,6 @@ func send(request *http.Request) []byte {
 	}
 
 	LoggerAPI.Debug().RawJSON("Data", data).Msgf("[%s] %s", request.Method, request.URL.String())
-	// LoggerAPI.Debug().Str("Data", data).Msgf("[%s] %s", request.Method, request.URL.String())
 
 	return data
 }

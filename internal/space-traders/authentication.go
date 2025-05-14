@@ -9,7 +9,7 @@ import (
 
 // TODO : Change token manipulation
 const (
-	TOKEN_AGENT_PATH   = "../.token-agent"
+	TOKEN_AGENT_PATH   = "./.token-agent"
 	TOKEN_ACCOUNT_PATH = "../.token-account" //nolint
 )
 

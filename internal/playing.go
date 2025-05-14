@@ -8,8 +8,6 @@ import (
 )
 
 func InitSpaceTradersData() {
-	// logger := InitLoggerByService("API", zerolog.DebugLevel)
-
 	models.Init()
 	/*
 		wg := sync.WaitGroup{}
@@ -25,8 +23,6 @@ func InitSpaceTradersData() {
 
 func InitSDL() {
 	sdl.Main(func() {
-		// loggerSDL := InitLoggerByService("SDL", zerolog.DebugLevel)
-
 		boxes.Run()
 	})
 }

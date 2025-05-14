@@ -23,6 +23,6 @@ func orbital(renderer *sdl.Renderer, position int32) {
 
 func Orbitals(renderer *sdl.Renderer) {
 	for key := range models.MyPosition.Data.Orbitals {
-		orbital(renderer, int32((key+1)*50))
+		orbital(renderer, int32((key+1)*50)) //nolint
 	}
 }
