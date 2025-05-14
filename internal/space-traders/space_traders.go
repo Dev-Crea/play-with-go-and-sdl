@@ -81,8 +81,9 @@ func send(request *http.Request) []byte {
 	}
 
 	LoggerAPI.Debug().
-		Str("URL", request.URL.String()).
+		Stringer("URL", request.URL).
 		Str("Method", request.Method).
+		Int("Code", response.StatusCode).
 		RawJSON("Data", data).
 		Msg("")
 

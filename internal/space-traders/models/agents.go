@@ -38,8 +38,8 @@ func InitAgent() {
 	MyAgent = getAgentData()
 	MyPosition = getAgentStartData()
 
-	// getAgentStartContract()
-	// postAgentNegociateContract()
+	getAgentStartContract()
+	postAgentNegociateContract()
 }
 
 func getAgentData() AgentResponseData {
@@ -79,7 +79,6 @@ func getAgentStartData() SystemResponseData {
 	return responsePosition
 }
 
-/*
 func getAgentStartContract() ContractResponseData {
 	endpoint := url.Values{}
 	endpoint.Add("api", "my")
@@ -90,8 +89,7 @@ func getAgentStartContract() ContractResponseData {
 
 	err := json.Unmarshal(data, &responseContract)
 	if err != nil {
-		fmt.Printf("Error : %s", err)
-		panic(err)
+		LoggerAPI.Error().Stack().Err(err).Msg("Error start contract")
 	}
 
 	return responseContract
@@ -106,9 +104,14 @@ func postAgentNegociateContract() {
 	endpoint.Add("api", "contract")
 
 	data := space_traders.PostSpaceTradersData(endpoint, nil)
-	fmt.Printf("> %s", data)
+
+	var responseContract ContractResponseData
+
+	err := json.Unmarshal(data, &responseContract)
+	if err != nil {
+		LoggerAPI.Error().Stack().Err(err).Msg("Error start contract")
+	}
 }
-*/
 
 func (x AgentResponseData) GetSymbol() string {
 	return fmt.Sprintf("Symbol : %s", x.Data.Symbol)
